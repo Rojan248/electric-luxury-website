@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Experience the future of electric luxury automotive design with cutting-edge scroll-driven animations and premium aesthetics">
+    <title>Electric Luxury | The Future of Automotive Design</title>
+
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&family=Outfit:wght@100;200;300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">LOADING EXPERIENCE</p>
+            <div class="loading-bar">
+                <div id="loading-progress" class="loading-progress"></div>
+            </div>
+            <p id="loading-percentage" class="loading-percentage">0%</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span class="logo-text">ELECTRIC</span>
+                <span class="logo-accent">LUXURY</span>
+            </div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#video-section" class="nav-link">Experience</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="nav-cta">Configure</button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section">
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="hero-title-line">THE FUTURE</span>
+                <span class="hero-title-line hero-title-accent">IS ELECTRIC</span>
+            </h1>
+            <p class="hero-subtitle">Experience the pinnacle of automotive engineering. Zero emissions. Infinite
+                performance.</p>
+            <div class="hero-cta-group">
+                <button class="btn btn-primary" onclick="document.getElementById('video-section').scrollIntoView();">
+                    <span>Discover More</span>
+                    <svg class="btn-icon" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </button>
+                <button class="btn btn-secondary">
+                    <span>Watch Film</span>
+                    <svg class="btn-icon" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-indicator-line"></div>
+            <span class="scroll-indicator-text">SCROLL</span>
+        </div>
+    </section>
+
+    <!-- FIXED VIDEO BACKGROUND (Moves behind content) -->
+    <div id="video-container" class="video-container-fixed">
+        <canvas id="video-canvas" class="video-canvas"></canvas>
+
+        <!-- Sequential Text Overlays -->
+        <div class="video-overlay-container">
+            <!-- 0-20% Range -->
+            <div class="video-overlay-item" data-range="0">
+                <h2 class="video-title">PURE ELEGANCE</h2>
+                <p class="video-subtitle">Designed to captivate from every angle.</p>
+            </div>
+
+            <!-- 20-40% Range -->
+            <div class="video-overlay-item" data-range="1">
+                <h2 class="video-title">AERODYNAMIC MASTERY</h2>
+                <p class="video-subtitle">Slicing through air with minimal resistance.</p>
+            </div>
+
+            <!-- 40-60% Range -->
+            <div class="video-overlay-item" data-range="2">
+                <h2 class="video-title">UNMATCHED POWER</h2>
+                <p class="video-subtitle">0-60 mph in just 1.9 seconds.</p>
+            </div>
+
+            <!-- 60-100% Range -->
+            <div class="video-overlay-item" data-range="3">
+                <h2 class="video-title">ENGINEERED PERFECTION</h2>
+                <p class="video-subtitle">Where luxury meets future technology.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCROLL TRACK (Invisible spacer to drive animation) -->
+    <section id="video-section" class="video-scroll-track"></section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="features-header">
+            <h2 class="section-title">Revolutionary Design</h2>
+            <p class="section-subtitle">Where innovation meets luxury</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" data-feature="1">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M24 8L28 20H40L30 28L34 40L24 32L14 40L18 28L8 20H20L24 8Z" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="feature-title">Electric Performance</h3>
+                <p class="feature-description">Zero-emission power delivery with instant torque and whisper-quiet
+                    operation that redefines performance standards.</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-value">2.1s</span>
+                        <span class="stat-label">0-60 mph</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">520</span>
+                        <span class="stat-label">Horsepower</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card" data-feature="2">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="2" />
+                        <path d="M24 8V24L32 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h3 class="feature-title">Extended Range</h3>
+                <p class="feature-description">Advanced battery technology providing unparalleled range for your longest
+                    journeys without compromise.</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-value">450</span>
+                        <span class="stat-label">Miles Range</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">15min</span>
+                        <span class="stat-label">Fast Charge</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card" data-feature="3">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <rect x="8" y="12" width="32" height="24" rx="4" stroke="currentColor" stroke-width="2" />
+                        <path d="M16 20H32M16 28H24" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h3 class="feature-title">Autonomous Driving</h3>
+                <p class="feature-description">State-of-the-art AI-powered autonomous systems for the safest and most
+                    intuitive driving experience.</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-value">Level 4</span>
+                        <span class="stat-label">Autonomy</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">360°</span>
+                        <span class="stat-label">Awareness</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card" data-feature="4">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M8 24C8 15.1634 15.1634 8 24 8C32.8366 8 40 15.1634 40 24C40 32.8366 32.8366 40 24 40"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M8 24L16 32L8 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="feature-title">Sustainable Luxury</h3>
+                <p class="feature-description">Crafted with ethically sourced materials and powered by renewable energy
+                    for guilt-free luxury.</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-value">100%</span>
+                        <span class="stat-label">Recyclable</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">Carbon</span>
+                        <span class="stat-label">Neutral</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-content">
+            <h2 class="section-title">Reserve Your Future</h2>
+            <p class="section-subtitle">Be among the first to experience electric luxury</p>
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Full Name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email Address" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" placeholder="Phone Number" class="form-input">
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Message (Optional)" class="form-input form-textarea"
+                        rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span>Reserve Now</span>
+                    <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 class="footer-title">ELECTRIC LUXURY</h4>
+                <p class="footer-text">Redefining automotive excellence through electric innovation and timeless design.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h5 class="footer-heading">Company</h5>
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Careers</a>
+                <a href="#" class="footer-link">Press</a>
+                <a href="#" class="footer-link">Sustainability</a>
+            </div>
+            <div class="footer-section">
+                <h5 class="footer-heading">Support</h5>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">FAQ</a>
+                <a href="#" class="footer-link">Warranty</a>
+                <a href="#" class="footer-link">Service Centers</a>
+            </div>
+            <div class="footer-section">
+                <h5 class="footer-heading">Connect</h5>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Twitter">X</a>
+                    <a href="#" class="social-link" aria-label="Instagram">IG</a>
+                    <a href="#" class="social-link" aria-label="YouTube">YT</a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">IN</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">&copy; 2026 Electric Luxury. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
