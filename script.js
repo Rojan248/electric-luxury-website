@@ -5,24 +5,30 @@
 
 // Configuration
 const CONFIG = {
-    TOTAL_FRAMES: 384,
+    TOTAL_FRAMES: 576,
     SKY_DESCENT_FRAMES: 192,
     SIDE_VIEW_FRAMES: 192,
-    TRANSITION_POINT: 192,
+    EXPANSION_FRAMES: 192,
+    TRANSITION_POINT_1: 192,   // Sky → Side
+    TRANSITION_POINT_2: 384,   // Side → Expansion
     HERO_PARTICLE_COUNT: 50,
     PRELOAD_BATCH_SIZE: 10,
 };
 
 // Get the correct frame path based on animation index (1-384)
 function getFramePath(animationIndex) {
-    if (animationIndex <= CONFIG.TRANSITION_POINT) {
+    if (animationIndex <= CONFIG.TRANSITION_POINT_1) {
         // Part 1: Sky descent (Frames2/) - 3-digit padded
         const paddedNumber = String(animationIndex).padStart(3, '0');
         return `./Frames2/frame-${paddedNumber}.png`;
-    } else {
+    } else if (animationIndex <= CONFIG.TRANSITION_POINT_2) {
         // Part 2: Side view (frames/) - no padding
-        const sideFrameIndex = animationIndex - CONFIG.TRANSITION_POINT;
+        const sideFrameIndex = animationIndex - CONFIG.TRANSITION_POINT_1;
         return `./frames/frame-${sideFrameIndex}.png`;
+    } else {
+        // Part 3: Expansion (frames3/) - no padding
+        const expansionIndex = animationIndex - CONFIG.TRANSITION_POINT_2;
+        return `./frames3/frame-${expansionIndex}.png`;
     }
 }
 
@@ -38,6 +44,10 @@ const state = {
     heroAnimationFrame: null,
     videoAnimationFrame: null, // Separate animation loop for video
 };
+
+// Expose for debugging/testing
+window.state = state;
+window.CONFIG = CONFIG;
 
 // Canvas contexts
 let heroCanvas, heroCtx;
@@ -491,24 +501,32 @@ function updateVideoOverlay() {
     const scrollProgress = (scrollTop - sectionTop) / (sectionHeight - viewportHeight);
     const progress = Math.max(0, Math.min(1, scrollProgress));
 
-    // Determine active range based on 4 segments:
-    // 0-20%, 20-40%, 40-60%, 60-100%
+    // 6 segments across 3 sequences (Sky, Side, Expansion)
+    // 0-12%: Sky intro
+    // 12-25%: Sky→Side transition
+    // 25-45%: Side showcase
+    // 45-60%: Side detail
+    // 60-80%: Side→Expansion
+    // 80-100%: Expansion
     let activeIndex = -1;
 
-    if (progress >= 0 && progress < 0.20) {
+    if (progress >= 0 && progress < 0.12) {
         activeIndex = 0;
-    } else if (progress >= 0.20 && progress < 0.40) {
+    } else if (progress >= 0.12 && progress < 0.25) {
         activeIndex = 1;
-    } else if (progress >= 0.40 && progress < 0.60) {
+    } else if (progress >= 0.25 && progress < 0.45) {
         activeIndex = 2;
-    } else if (progress >= 0.60 && progress <= 1.0) {
+    } else if (progress >= 0.45 && progress < 0.60) {
         activeIndex = 3;
+    } else if (progress >= 0.60 && progress < 0.80) {
+        activeIndex = 4;
+    } else if (progress >= 0.80 && progress <= 1.0) {
+        activeIndex = 5;
     }
 
     // Update visibility classes
     const items = document.querySelectorAll('.video-overlay-item');
     items.forEach((item, index) => {
-        // Range check
         if (index === activeIndex) {
             item.classList.add('visible');
         } else {

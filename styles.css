@@ -525,8 +525,8 @@ img {
 /* This is now just a spacer to create scroll length */
 .video-scroll-track {
     position: relative;
-    height: 800vh;
-    /* Determines length of animation - 384 frames */
+    height: 1200vh;
+    /* Determines length of animation - 576 frames */
     background: transparent;
     /* Transparent so fixed video shows through */
     pointer-events: none;
