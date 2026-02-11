@@ -5,11 +5,26 @@
 
 // Configuration
 const CONFIG = {
-    TOTAL_FRAMES: 192,
-    FRAME_PATH: './frames/frame-{index}.png',
+    TOTAL_FRAMES: 384,
+    SKY_DESCENT_FRAMES: 192,
+    SIDE_VIEW_FRAMES: 192,
+    TRANSITION_POINT: 192,
     HERO_PARTICLE_COUNT: 50,
     PRELOAD_BATCH_SIZE: 10,
 };
+
+// Get the correct frame path based on animation index (1-384)
+function getFramePath(animationIndex) {
+    if (animationIndex <= CONFIG.TRANSITION_POINT) {
+        // Part 1: Sky descent (Frames2/) - 3-digit padded
+        const paddedNumber = String(animationIndex).padStart(3, '0');
+        return `./Frames2/frame-${paddedNumber}.png`;
+    } else {
+        // Part 2: Side view (frames/) - no padding
+        const sideFrameIndex = animationIndex - CONFIG.TRANSITION_POINT;
+        return `./frames/frame-${sideFrameIndex}.png`;
+    }
+}
 
 // State management
 const state = {
@@ -95,6 +110,8 @@ function init() {
 
     if (videoCanvas) {
         videoCtx = videoCanvas.getContext('2d', { alpha: false });
+        videoCtx.imageSmoothingEnabled = true;
+        videoCtx.imageSmoothingQuality = 'high';
         resizeCanvas(videoCanvas);
     }
 
@@ -150,7 +167,6 @@ function preloadFrames() {
         const batchPromises = batch.map(index => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
-                const paddedIndex = String(index);
 
                 img.onload = () => {
                     state.frames[index - 1] = img;
@@ -168,7 +184,7 @@ function preloadFrames() {
                     resolve();
                 };
 
-                img.src = CONFIG.FRAME_PATH.replace('{index}', paddedIndex);
+                img.src = getFramePath(index);
             });
         });
 
@@ -406,40 +422,35 @@ function drawFrame(index) {
 
     const img = state.frames[index];
     const canvas = videoCanvas;
-    const dpr = window.devicePixelRatio || 1;
 
-    // Clear canvas with black background (for letterboxing)
-    videoCtx.fillStyle = '#000000';
-    videoCtx.fillRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas
+    videoCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Frame dimensions (2560 x 1440 for 16:9)
+    // Frame dimensions
     const imageWidth = img.naturalWidth || img.width;
     const imageHeight = img.naturalHeight || img.height;
-    const imageAspect = imageWidth / imageHeight; // Should be ~1.778 (16:9)
+    const imageAspect = imageWidth / imageHeight;
 
-    // Canvas dimensions (accounting for DPR)
+    // Canvas dimensions (already scaled by DPR in resizeCanvas)
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     const canvasAspect = canvasWidth / canvasHeight;
 
     let drawWidth, drawHeight, offsetX, offsetY;
 
-    // FIT the image INSIDE the canvas (contain, not cover)
-    // This ensures the ENTIRE image is visible with letterboxing if needed
+    // COVER MODE: Fill entire canvas, crop if necessary (no black bars)
     if (canvasAspect > imageAspect) {
-        // Canvas is WIDER than the image aspect ratio
-        // Fit to HEIGHT, center horizontally (black bars on left/right)
-        drawHeight = canvasHeight;
-        drawWidth = canvasHeight * imageAspect;
-        offsetX = (canvasWidth - drawWidth) / 2;
-        offsetY = 0;
-    } else {
-        // Canvas is TALLER than the image aspect ratio
-        // Fit to WIDTH, center vertically (black bars on top/bottom)
+        // Canvas is WIDER than image - fit to WIDTH (crop top/bottom)
         drawWidth = canvasWidth;
         drawHeight = canvasWidth / imageAspect;
         offsetX = 0;
         offsetY = (canvasHeight - drawHeight) / 2;
+    } else {
+        // Canvas is TALLER than image - fit to HEIGHT (crop sides)
+        drawHeight = canvasHeight;
+        drawWidth = canvasHeight * imageAspect;
+        offsetX = (canvasWidth - drawWidth) / 2;
+        offsetY = 0;
     }
 
     // Use integer values for crisp rendering
@@ -448,7 +459,11 @@ function drawFrame(index) {
     offsetX = Math.floor(offsetX);
     offsetY = Math.floor(offsetY);
 
-    // Draw image centered and scaled to fit entirely within canvas
+    // Ensure high quality smoothing is maintained
+    videoCtx.imageSmoothingEnabled = true;
+    videoCtx.imageSmoothingQuality = 'high';
+
+    // Draw image covering entire canvas
     videoCtx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
 }
 
